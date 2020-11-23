@@ -1,19 +1,16 @@
-CXX = g++
+CXX := g++
+CPATH := src/
+ROOT_DIR := $(shell pwd)/
+OBJ_DIR := out/
 
-MAIN_SRC = main.c
-FUNCTION_SRC = function.cpp
+SRC_FILE := $(wildcard $(ROOT_DIR)$(CPATH)*.c*)
+#SRC_OBJ = $(patsubst %.c, %.o, $(wildcard $(ROOT_DIR)$(OBJ_DIR)*.c)) $(patsubst %.cpp, %.o, $(wildcard $(ROOT_DIR)$(OBJ_DIR)*.cpp))
+OUTPUT_NAME := main
 
-MIX_SRC_OBJ = ${MAIN_SRC:.c=.o} ${FUNCTION_SRC:.cpp=.o}
+all: makeObjectFile
+	@$(CXX) -o $(OUTPUT_NAME) $(wildcard $(ROOT_DIR)$(OBJ_DIR)*.o)
 
+include ./include/Makefile
 
-OUTPUT_NAME = main
-
-.SILENT:
-all: 
-	$(CXX) -c $(MAIN_SRC) $(FUNCTION_SRC)
-
-	$(CXX) -o $(OUTPUT_NAME) $(MIX_SRC_OBJ)
-
-clean:
-	$(RM) -f $(MIX_SRC_OBJ)
-	$(RM) -f $(OUTPUT_NAME)
+clean: cleanObjectFile
+	@$(RM) -f $(OUTPUT_NAME)
